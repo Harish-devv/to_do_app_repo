@@ -2,6 +2,10 @@ let input = document.getElementById("input");
 let addButton = document.getElementById("addBtn");
 let list = document.getElementById("list");
 
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+showTasks();
+
 addButton.onclick = () => {
     addTask();
 }
@@ -15,35 +19,46 @@ input.addEventListener("keydown", (e) => {
 function addTask(){
     if(input.value === "") return;
 
-    let task = document.createElement("div");
-    task.className = "tasks";
+    tasks.push({
+        text: input.value,
+        done: false
+    });
 
-    let checkBox = document.createElement("input");
-    checkBox.type = "checkbox";
-
-    let taskName = document.createElement("span");
-    taskName.innerText = input.value;
-
-    let delButton = document.createElement("button");
-    delButton.innerText = "Delete";
-    delButton.className = "delButton";
-
-    delButton.onclick = () => {
-    task.remove();
-    }
-
-    checkBox.addEventListener("change", () => {
-        if(checkBox.checked){
-            task.style.backgroundColor = "green";
-        } else{
-            task.style.backgroundColor = "gray";
-        }
-    })
-
-    list.append(task);
-    task.append(checkBox);
-    task.append(taskName);
-    task.append(delButton);
-
+    localStorage.setItem("tasks", JSON.stringify(tasks));
     input.value = "";
+    showTasks();
+}
+
+function showTasks(){
+    list.innerHTML = "";
+
+    tasks.forEach((task, index) => {
+        let div = document.createElement("div");
+        
+        let checkBox = document.createElement("input");
+        checkBox.type = "checkbox";
+        checkBox.checked = task.done;
+
+        let span = document.createElement("span");
+        span.innerText = task.text;
+
+        let delButton = document.createElement("button");
+        delButton.innerText = "Delete";
+        delButton.style.marginLeft = "5px";
+
+        delButton.onclick = () => {
+            tasks.splice(index, 1);
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            showTasks();
+        }
+
+        checkBox.onchange = () => {
+            task.done = checkBox.checked;
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            showTasks();
+        }
+
+        list.append(div);
+        div.append(checkBox, span, delButton);
+    });
 }
