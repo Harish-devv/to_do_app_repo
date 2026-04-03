@@ -42,6 +42,20 @@ function showTasks(){
         let span = document.createElement("span");
         span.innerText = task.text;
 
+        let editButton = document.createElement("button");
+        editButton.innerText = "Edit";
+        editButton.style.marginLeft = "5px";
+
+        editButton.onclick = () => {
+            let newTask = prompt("Edit your task: ", task.text);
+
+            if(newTask !== null && newTask.trim() !== ""){
+                tasks[index].text = newTask.trim();
+                localStorage.setItem("tasks", JSON.stringify(tasks));
+                showTasks();
+            }
+        }
+
         let delButton = document.createElement("button");
         delButton.innerText = "Delete";
         delButton.style.marginLeft = "5px";
@@ -59,6 +73,6 @@ function showTasks(){
         }
 
         list.append(div);
-        div.append(checkBox, span, delButton);
+        div.append(checkBox, span, editButton, delButton);
     });
 }
