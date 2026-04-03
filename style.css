@@ -1,0 +1,11 @@
+.delButton {
+    margin-left: 10px
+}
+
+.tasks {
+    background-color: gray;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    display: flex;
+}
