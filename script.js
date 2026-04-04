@@ -1,7 +1,9 @@
 let input = document.getElementById("input");
 let addButton = document.getElementById("addBtn");
 let allClearButton = document.getElementById("clearAllBtn");
+let selectAll = document.getElementById("selectAll");
 let list = document.getElementById("list");
+
 
 let totalTasks = document.getElementById("total");
 let completedTasks = document.getElementById("completed");
@@ -21,6 +23,12 @@ allClearButton.onclick = () => {
     clearTasks();
 }
 
+selectAll.onclick = () => {
+    tasks.forEach(task => {
+        task.done = true;
+        showTasks();
+    })
+}
 input.addEventListener("keydown", (e) => {
     if(e.key === "Enter"){
     addTask();
