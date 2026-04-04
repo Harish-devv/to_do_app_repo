@@ -13,6 +13,7 @@ let completedTasks = document.getElementById("completed");
 let remainingTasks = document.getElementById("remaining");
 
 let currentFilter = "all";
+let draggedIndex = null;
 
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -81,6 +82,7 @@ function showTasks(){
         if(currentFilter === "pending" && task.done) return;
 
         let div = document.createElement("div");
+        div.draggable = true;
         
         let checkBox = document.createElement("input");
         checkBox.type = "checkbox";
@@ -124,6 +126,24 @@ function showTasks(){
             localStorage.setItem("tasks", JSON.stringify(tasks));
             showTasks();
         }
+
+        div.addEventListener("dragstart", ()=> {
+            draggedIndex = index;
+        });
+
+        div.addEventListener("dragover", (e) => {
+            e.preventDefault();
+        })
+
+        div.addEventListener("drop", () => {
+            let temp = tasks[draggedIndex];
+            tasks[draggedIndex] = tasks[index];
+            tasks[index] = temp;
+
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            showTasks();
+
+        })
 
         list.append(div);
         div.append(checkBox, span, small, editButton, delButton);
