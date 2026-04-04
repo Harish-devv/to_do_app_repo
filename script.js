@@ -2,6 +2,11 @@ let input = document.getElementById("input");
 let addButton = document.getElementById("addBtn");
 let list = document.getElementById("list");
 
+let totalTasks = document.getElementById("total");
+let completedTasks = document.getElementById("completed");
+let remainingTasks = document.getElementById("remaining");
+
+
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 showTasks();
@@ -75,4 +80,16 @@ function showTasks(){
         list.append(div);
         div.append(checkBox, span, editButton, delButton);
     });
+    updateCounter();
+}
+
+function updateCounter(){
+    let total = tasks.length;
+    let completed = tasks.filter(task => task.done).length;
+    let remaining = total - completed;
+
+    totalTasks.innerText = total;
+    completedTasks.innerText = completed;
+    remainingTasks.innerText = remaining;
+
 }
