@@ -30,8 +30,10 @@ allClearButton.onclick = () => {
 selectAll.onclick = () => {
     tasks.forEach(task => {
         task.done = true;
-        showTasks();
-    })
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    showTasks();
+
 }
 document.querySelector(".input-box").addEventListener("keydown", (e) => {
     if(e.key === "Enter"){
@@ -51,7 +53,8 @@ function addTask(){
         text: input.value,
         done: false,
         duedate: dueDate.value,
-        duetime: dueTime.value
+        duetime: dueTime.value,
+        pinned: false
     });
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -77,9 +80,12 @@ function clearTasks(){
 function showTasks(){
     list.innerHTML = "";
 
+        tasks.sort((a, b) => b.pinned - a.pinned);
+
     tasks.forEach((task, index) => {
         if(currentFilter === "completed" && !task.done) return;
         if(currentFilter === "pending" && task.done) return;
+
 
         let div = document.createElement("div");
         div.draggable = true;
@@ -91,6 +97,10 @@ function showTasks(){
         let span = document.createElement("span");
         span.innerText = task.text;
 
+        let pin = document.createElement("button");
+        pin.innerText = task.pinned ? "Unpin" : "Pin";
+        pin.style.margin = "5px";
+
         let small = document.createElement("small");
 
         if(task.duedate && task.duetime){
@@ -99,7 +109,14 @@ function showTasks(){
 
         let editButton = document.createElement("button");
         editButton.innerText = "Edit";
-        editButton.style.marginLeft = "5px";
+        editButton.style.margin = "5px";
+
+        pin.addEventListener("click", () => {
+            task.pinned = !task.pinned;
+            pin.innerText = task.pinned ? "Unpin" : "Pin";
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            showTasks();
+        })
 
         editButton.onclick = () => {
             let newTask = prompt("Edit your task: ", task.text);
@@ -146,7 +163,7 @@ function showTasks(){
         })
 
         list.append(div);
-        div.append(checkBox, span, small, editButton, delButton);
+        div.append(checkBox, span, pin, small, editButton, delButton);
     });
     updateCounter();
 }
