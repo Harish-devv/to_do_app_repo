@@ -7,9 +7,10 @@ let totalTasks = document.getElementById("total");
 let completedTasks = document.getElementById("completed");
 let remainingTasks = document.getElementById("remaining");
 
+let currentFilter = "all";
+
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
 showTasks();
 
 addButton.onclick = () => {
@@ -25,6 +26,11 @@ input.addEventListener("keydown", (e) => {
     addTask();
     }
 });
+
+function setFilter(filter){
+    currentFilter = filter;
+    showTasks();
+}
 
 function addTask(){
     if(input.value === "") return;
@@ -54,6 +60,9 @@ function showTasks(){
     list.innerHTML = "";
 
     tasks.forEach((task, index) => {
+        if(currentFilter === "completed" && !task.done) return;
+        if(currentFilter === "pending" && task.done) return;
+
         let div = document.createElement("div");
         
         let checkBox = document.createElement("input");
