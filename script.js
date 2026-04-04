@@ -2,6 +2,9 @@ let input = document.getElementById("input");
 let addButton = document.getElementById("addBtn");
 let allClearButton = document.getElementById("clearAllBtn");
 let selectAll = document.getElementById("selectAll");
+let dueDate = document.getElementById("dueDate");
+let dueTime = document.getElementById("dueTime");
+
 let list = document.getElementById("list");
 
 
@@ -29,7 +32,7 @@ selectAll.onclick = () => {
         showTasks();
     })
 }
-input.addEventListener("keydown", (e) => {
+document.querySelector(".input-box").addEventListener("keydown", (e) => {
     if(e.key === "Enter"){
     addTask();
     }
@@ -45,11 +48,17 @@ function addTask(){
 
     tasks.push({
         text: input.value,
-        done: false
+        done: false,
+        duedate: dueDate.value,
+        duetime: dueTime.value
     });
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
+
     input.value = "";
+    dueDate.value = "";
+    dueTime.value = "";
+
     showTasks();
 }
 
@@ -79,6 +88,12 @@ function showTasks(){
 
         let span = document.createElement("span");
         span.innerText = task.text;
+
+        let small = document.createElement("small");
+
+        if(task.duedate && task.duetime){
+        small.innerText = " (Due: " + " " + task.duedate + ", " + task.duetime +")"
+        }
 
         let editButton = document.createElement("button");
         editButton.innerText = "Edit";
@@ -111,7 +126,7 @@ function showTasks(){
         }
 
         list.append(div);
-        div.append(checkBox, span, editButton, delButton);
+        div.append(checkBox, span, small, editButton, delButton);
     });
     updateCounter();
 }
