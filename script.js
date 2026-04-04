@@ -1,5 +1,6 @@
 let input = document.getElementById("input");
 let addButton = document.getElementById("addBtn");
+let allClearButton = document.getElementById("clearAllBtn");
 let list = document.getElementById("list");
 
 let totalTasks = document.getElementById("total");
@@ -13,6 +14,10 @@ showTasks();
 
 addButton.onclick = () => {
     addTask();
+}
+
+allClearButton.onclick = () => {
+    clearTasks();
 }
 
 input.addEventListener("keydown", (e) => {
@@ -32,6 +37,17 @@ function addTask(){
     localStorage.setItem("tasks", JSON.stringify(tasks));
     input.value = "";
     showTasks();
+}
+
+function clearTasks(){
+
+    let confirmDeletion = confirm("Do you want to clear all the tasks?");
+
+    if(confirmDeletion){
+    tasks.splice(0, tasks.length);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    showTasks();
+    }
 }
 
 function showTasks(){
@@ -91,5 +107,4 @@ function updateCounter(){
     totalTasks.innerText = total;
     completedTasks.innerText = completed;
     remainingTasks.innerText = remaining;
-
 }
