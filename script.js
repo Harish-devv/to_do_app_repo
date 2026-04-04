@@ -90,15 +90,19 @@ function showTasks(){
         let div = document.createElement("div");
         div.draggable = true;
         
+        let span = document.createElement("span");
+        span.className = "task-options";
+
+        let label = document.createElement("label");
+
         let checkBox = document.createElement("input");
         checkBox.type = "checkbox";
         checkBox.checked = task.done;
 
-        let span = document.createElement("span");
-        span.innerText = task.text;
-
         let pin = document.createElement("button");
-        pin.innerText = task.pinned ? "Unpin" : "Pin";
+        pin.innerHTML = '<i class="fa-solid fa-thumbtack"></i>';
+        pin.className = "button-options";
+
         pin.style.margin = "5px";
 
         let small = document.createElement("small");
@@ -108,15 +112,21 @@ function showTasks(){
         }
 
         let editButton = document.createElement("button");
-        editButton.innerText = "Edit";
+        editButton.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
         editButton.style.margin = "5px";
+        editButton.className = "button-options";
+
 
         pin.addEventListener("click", () => {
             task.pinned = !task.pinned;
-            pin.innerText = task.pinned ? "Unpin" : "Pin";
+            pin.innerHTML = '<i class="fa-solid fa-thumbtack"></i>';
             localStorage.setItem("tasks", JSON.stringify(tasks));
             showTasks();
-        })
+        });
+
+        if(task.pinned){
+            div.style.backgroundColor = "blue";
+        }
 
         editButton.onclick = () => {
             let newTask = prompt("Edit your task: ", task.text);
@@ -129,8 +139,10 @@ function showTasks(){
         }
 
         let delButton = document.createElement("button");
-        delButton.innerText = "Delete";
+        delButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
         delButton.style.marginLeft = "5px";
+        delButton.className = "button-options";
+
 
         delButton.onclick = () => {
             tasks.splice(index, 1);
@@ -163,7 +175,10 @@ function showTasks(){
         })
 
         list.append(div);
-        div.append(checkBox, span, pin, small, editButton, delButton);
+        label.append(checkBox, task.text);
+        span.append(small, pin, editButton, delButton);
+        div.append(label, span);
+
     });
     updateCounter();
 }

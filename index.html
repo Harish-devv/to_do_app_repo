@@ -4,43 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>To Do App</title>
 </head>
 <body>
     <div class="container">
         <h2 class="header">To-Do List</h2>
 
-        <br>
-
         <div class="input-box">
-            <input id="input" type="text" placeholder="Enter a task">
-            <button id="addBtn">Add</button>
-            <button id="clearAllBtn">Clear All</button>
-            <button id="selectAll">Mark all as completed</button>
-            <input type="date" id="dueDate">
-            <input type="time" id="dueTime">
+            <input id="input" class="input" type="text" placeholder="Enter a task">
+            <span class="inputs-1st-row">
+                <button id="addBtn" class="buttons">Add</button>
+                <button id="clearAllBtn" class="buttons">Clear All</button>
+                <button id="selectAll" class="buttons">Select All</button>
+            </span>
+                <p style="display: inline;">Set due for the task:</p>
+                <input type="date" id="dueDate" class="due">
+                <input type="time" id="dueTime" class="due">
         </div>
+        <div class="filters-counters">
+            <div class=filters>
+                <p style="display: inline;">Filters:</p>
+                <button onclick="setFilter('all')" class="buttons">All</button>
+                <button onclick="setFilter('completed')" class="buttons">Completed</button>
+                <button onclick="setFilter('pending')" class="buttons">Pending</button>
+            </div>
 
+            <br>
+
+            <div class="counter">
+                <p style="display: inline;">Total:</p> <span id="total">0</span> |
+                <p style="display: inline;">Completed:</p> <span id="completed">0</span> |
+                <p style="display: inline;">Remaining:</p> <span id="remaining">0</span> 
+            </div>
+        </div>
         <br>
-
-        <div class=filters>
-            Filters:
-            <button onclick="setFilter('all')">All</button>
-            <button onclick="setFilter('completed')">Completed</button>
-            <button onclick="setFilter('pending')">Pending</button>
-        </div>
-
-        <br>
-
-        <div class="counter">
-            Total: <span id="total">0</span> |
-            Completed: <span id="completed">0</span> |
-            Remaining: <span id="remaining">0</span> 
-        </div>
-        <br>
-        <div class="list">
-            <ul id="list"></ul>
-        </div>
+        <ul id="list" class="list"></ul>
     </div>
     <script src="script.js"></script>
 </body>
